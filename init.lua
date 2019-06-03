@@ -1,11 +1,17 @@
-local radius = 4
+--TODO: 
+--	1. Get a restricted mode working, since in its current form, it's way overpowered. I tried earlier, then gave up for now. 
+--	2. Figure out what to do when used on enemies...Kill them? Teleport them elsewhere? Hmmm....
+--	3. ?????
+--	4. Profit
+-- 	5. Fix the stupid bug with protection...It works, but...?????????????????
+--	6. Thorough commenting
 
--- chance for node restoral per second (No worries, all nodes will be restored, but not immediately)
+local radius = 4
 local c_randomize_restore = 2
 
 
 
-minetest.register_tool("slipspace_wand:slip_staff", {
+minetest.register_tool("slipspace_staff:slipspace_staff", {
 	description = "Move blocks into, or from, slipspace",
 	inventory_image = "slipspace_bore.png",
 	wield_image = "slipspace_bore.png",
@@ -24,9 +30,9 @@ minetest.register_tool("slipspace_wand:slip_staff", {
 			local data = manip:get_data()
 			local changed = false
 
-		local isu_id = minetest.get_content_id("slipspace_wand:slipspace_light")
+		local isu_id = minetest.get_content_id("slipspace_staff:slipspace_light")
 		local air_id = minetest.get_content_id("air")
-		local light_id = minetest.get_content_id("slipspace_wand:slipspace")
+		local light_id = minetest.get_content_id("slipspace_staff:slipspace")
 
 	-- check each node in the area
 	for i in area:iterp(pos1, pos2) do
@@ -106,7 +112,7 @@ end
 end
 }
 )
-minetest.register_node("slipspace_wand:slipspace_light", {
+minetest.register_node("slipspace_staff:slipspace_light", {
 	description = "Slipspace light",
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -119,7 +125,7 @@ minetest.register_node("slipspace_wand:slipspace_light", {
 	groups = {unbreakable = 1},
 	walkable = false,
 	on_timer = function(pos)
-	        minetest.swap_node(pos, { name = "slipspace_wand:slipspace" })
+	        minetest.swap_node(pos, { name = "slipspace_staff:slipspace" })
 	        return false
 	    end,
   on_construct = function(pos)
@@ -128,7 +134,7 @@ timer:start(2)
 end
 }
 )
-minetest.register_node("slipspace_wand:slipspace", {
+minetest.register_node("slipspace_staff:slipspace", {
 	description = ("Slipspace"),
 	range = 12,
 	stack_max = 10000,
@@ -145,7 +151,7 @@ minetest.register_node("slipspace_wand:slipspace", {
 })
 -- ABM to restore blocks
 minetest.register_abm({
-	nodenames = {"slipspace_wand:slipspace"},
+	nodenames = {"slipspace_staff:slipspace"},
 	interval = 2,
 	chance = 2,
 	action = function(pos, node, active_object_count,
@@ -171,7 +177,7 @@ minetest.register_abm({
 	end
 })
 minetest.register_abm({
-	nodenames = { "slipspace_wand:slipspace_light" },
+	nodenames = { "slipspace_staff:slipspace_light" },
 	interval = 2,
 	chance = c_randomize_restore,
 	action = function(pos, node)
@@ -179,6 +185,6 @@ minetest.register_abm({
 			return
 		end
 		local can_be_restored = true
-			minetest.swap_node(pos, {name = "slipspace_wand:slipspace"})
+			minetest.swap_node(pos, {name = "slipspace_staff:slipspace"})
 		end
 })
