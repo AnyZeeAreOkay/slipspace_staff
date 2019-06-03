@@ -1,5 +1,5 @@
---TODO: 
---	1. Get a restricted mode working, since in its current form, it's way overpowered. I tried earlier, then gave up for now. 
+--TODO:
+--	1. Get a restricted mode working, since in its current form, it's way overpowered. I tried earlier, then gave up for now.
 --	2. Figure out what to do when used on enemies...Kill them? Teleport them elsewhere? Hmmm....
 --	3. ?????
 --	4. Profit
@@ -37,10 +37,6 @@ minetest.register_tool("slipspace_staff:slipspace_staff", {
 	-- check each node in the area
 	for i in area:iterp(pos1, pos2) do
 		local nodepos = area:position(i)
-		-- WHY DOESN'T THIS WORK?????????!!!!???!!!ONEONE
-		if minetest.is_protected(nodepos) then
-		 return end
-
 		local cur_id = data[i]
 		if cur_id == light_id or cur_id == isu_id then
 			local meta = minetest.get_meta(area:position(i))
@@ -79,18 +75,16 @@ end
 	local data = manip:get_data()
 	local changed = false
 
-	local isu_id = minetest.get_content_id("slipspace_wand:slipspace_light")
+	local isu_id = minetest.get_content_id("slipspace_staff:slipspace_light")
 	local air_id = minetest.get_content_id("air")
-	local light_id = minetest.get_content_id("slipspace_wand:slipspace")
+	local light_id = minetest.get_content_id("slipspace_staff:slipspace")
 
 	-- check each node in the area
 	for i in area:iterp(pos1, pos2) do
 		local nodepos = area:position(i)
-		if minetest.is_protected(nodepos) then
-		 return end
 
 			local cur_id = data[i]
-			--if nodes in area and nodes do not equal slipspace_light or air or slipspace 
+			--if nodes in area and nodes do not equal slipspace_light or air or slipspace
 			if cur_id and cur_id ~= isu_id and cur_id ~= air_id and cur_id ~= light_id then
 				local cur_name = minetest.get_name_from_content_id(cur_id)
 					minetest.get_node(area:position(i))
@@ -121,6 +115,7 @@ minetest.register_node("slipspace_staff:slipspace_light", {
 	light_source = 3,
 	buildable_to = true,
 	use_texture_alpha = true,
+	pointable = false,
 	is_ground_content = false,
 	groups = {unbreakable = 1},
 	walkable = false,
@@ -188,3 +183,4 @@ minetest.register_abm({
 			minetest.swap_node(pos, {name = "slipspace_staff:slipspace"})
 		end
 })
+
