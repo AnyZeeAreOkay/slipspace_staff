@@ -3,7 +3,7 @@
 --	2. Figure out what to do when used on enemies...Kill them? Teleport them elsewhere? Hmmm....
 --	3. ?????
 --	4. Profit
--- 	5. Fix the stupid bug with protection...It works, but...?????????????????
+-- 	5. REMOVED PROTECTION CHECK TEMPORARILY - doesn't affect gameplay, though --Fix the stupid bug with protection...It works, but...?????????????????
 --	6. Thorough commenting
 
 local radius = 4
