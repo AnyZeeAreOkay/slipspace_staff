@@ -59,6 +59,47 @@ minetest.register_tool("slipspace_staff:slipspace_staff", {
 end
 
 	end,
+on_secondary_use = function(itemstack, user, pointed_thing)
+	local pos = user:getpos()
+
+		local pos1 = {x=pos.x-20, y=pos.y-20, z=pos.z-20}
+		local pos2 = {x=pos.x+20, y=pos.y+20, z=pos.z+20}
+
+		local manip = minetest.get_voxel_manip()
+		local min_c, max_c = manip:read_from_map(pos1, pos2)
+		local area = VoxelArea:new({MinEdge=min_c, MaxEdge=max_c})
+
+		local data = manip:get_data()
+		local changed = false
+
+	local isu_id = minetest.get_content_id("slipspace_staff:slipspace_light")
+	local air_id = minetest.get_content_id("air")
+	local light_id = minetest.get_content_id("slipspace_staff:slipspace")
+
+-- check each node in the area
+for i in area:iterp(pos1, pos2) do
+	local nodepos = area:position(i)
+	local cur_id = data[i]
+	if cur_id == light_id or cur_id == isu_id then
+		local meta = minetest.get_meta(area:position(i))
+		local cur_name = minetest.get_name_from_content_id(cur_id)
+		local data = meta:to_table()
+		minetest.get_node(area:position(i))
+		meta:from_table(data)
+		summon2 = data.fields.summon
+		minetest.get_meta(area:position(i)):set_string("summon2", summon2)
+		data[i] = isu_id
+		changed = true
+
+		end
+		end
+		-- save changes if needed
+		if changed then
+		manip:set_data(data)
+		manip:write_to_map()
+end
+
+end,
 	on_use = function(itemstack, user, pointed_thing)
 		local pos = minetest.get_pointed_thing_position(pointed_thing)
 		if pointed_thing.type == "node" then
@@ -183,4 +224,3 @@ minetest.register_abm({
 			minetest.swap_node(pos, {name = "slipspace_staff:slipspace"})
 		end
 })
-
