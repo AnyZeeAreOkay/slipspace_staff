@@ -209,6 +209,8 @@ minetest.register_abm({
 			data.fields.summon = nil
 			meta:from_table(data)
 			minetest.swap_node(pos, node)
+			local timer = minetest.get_node_timer(pos)
+      timer:set(3, 2)
 		end
 	end
 })
@@ -216,7 +218,7 @@ minetest.register_abm({
 	nodenames = { "slipspace_staff:slipspace_light" },
 	interval = 2,
 	chance = c_randomize_restore,
-	action = function(pos, node)
+	action = function(pos, node, active_object_count)
 		if node.name == 'ignore' then
 			return
 		end
